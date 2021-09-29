@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="box-border px-12">
+  <h1 class="text-center text-5xl font-bold py-6">Chat Application</h1>
+ <div class="mt-12">
+  <ul class="list-none text-xl"></ul>
+  <form class="mt-6">
+    <input type="text" placeholder="Enter your Message" class="inputText p-2 border-2 border-gray-300 rounded-md">
+    <input type="submit" value="Send" class="py-2 px-4 bg-blue-500 text-white font-bold rounded-md">
+  </form>
+ </div>
+ <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    let input = document.querySelector(".inputText");
+    let form = document.querySelector("form");
+    let ul = document.querySelector("ul");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if(input.value) {
+        socket.emit("chat-message", input.value);
+        input.value = "";
+      }
+    });
+
+    socket.on("chat-message", (msg) => {
+      let li = document.createElement("li");
+      li.innerText = msg;
+      ul.append(li);
+    })
+  </script>
+</body>
+</html>
